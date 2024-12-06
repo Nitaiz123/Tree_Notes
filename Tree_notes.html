@@ -1,0 +1,2224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tree Patterns and Algorithms - Complete Guide</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --section-1-color: #3498db;
+            --section-2-color: #e74c3c;
+            --section-3-color: #2ecc71;
+            --section-4-color: #f39c12;
+            --code-bg: #f8f9fa;
+            --text-color: #333;
+            --border-color: #ddd;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100vh;
+            background: #f8f9fa;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .content {
+            margin-left: 320px;
+            padding: 40px;
+            max-width: 1200px;
+        }
+
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--primary-color);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 1em;
+            padding-bottom: 0.5em;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-top: 1.5em;
+            color: var(--section-1-color);
+        }
+
+        code {
+            background: var(--code-bg);
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+        }
+
+        pre {
+            background: var(--code-bg);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 8px 16px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 4px 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: var(--section-1-color);
+            color: white;
+        }
+
+        .implementation {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        th {
+            background: var(--section-1-color);
+            color: white;
+        }
+
+        .note {
+            background: #f8f9fa;
+            border-left: 4px solid var(--section-3-color);
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .top-link {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--section-1-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            text-decoration: none;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .top-link:hover {
+            background: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-container">
+        <h2>Contents</h2>
+        <a href="#serialization" class="nav-link">Serialization & Deserialization</a>
+        <a href="#lca" class="nav-link">LCA & Distances</a>
+        <a href="#traversals" class="nav-link">Tree Traversals</a>
+        <a href="#level-order" class="nav-link">Level-Order Traversal</a>
+        <a href="#construction" class="nav-link">Tree Construction</a>
+        <a href="#removal" class="nav-link">Removal & Trimming</a>
+        <a href="#linked-list" class="nav-link">Linked List Conversion</a>
+        <a href="#flattening" class="nav-link">Flattening Trees</a>
+        <a href="#order-statistics" class="nav-link">Order Statistics</a>
+    </nav>
+
+    <main class="content">
+        <h1>Tree Patterns and Algorithms</h1>
+
+        <section id="overview" class="section">
+            <h2>Overview</h2>
+            <p>A comprehensive guide to tree data structures and algorithms, covering essential patterns and techniques for solving tree-related problems.</p>
+        </section>
+
+        <section id="serialization" class="section">
+            <h2>Tree Serialization and Deserialization</h2>
+            
+            <div class="implementation">
+                <h3>1. Preorder DFS Method</h3>
+                <h4>Code Explanation:</h4>
+                <ul>
+                    <li>Serialization:
+                        <ul>
+                            <li>Uses depth-first search in preorder (root, left, right)</li>
+                            <li>Marks null nodes with "#" to preserve tree structure</li>
+                            <li>Joins values with commas for string representation</li>
+                        </ul>
+                    </li>
+                    <li>Deserialization:
+                        <ul>
+                            <li>Creates an iterator from the comma-separated values</li>
+                            <li>Recursively builds tree following preorder pattern</li>
+                            <li>Returns null when encountering "#"</li>
+                        </ul>
+                    </li>
+                </ul>
+                <pre><code class="language-python">
+class Codec:
+    def serialize(self, root):  # Step-by-step serialization
+        def dfs(node):
+            if not node:        # Base case: null node
+                result.append("#")
+                return
+            result.append(str(node.val))  # Add current node
+            dfs(node.left)                # Process left subtree
+            dfs(node.right)               # Process right subtree
+        
+        result = []
+        dfs(root)
+        return ','.join(result)
+
+    def deserialize(self, data):  # Step-by-step deserialization
+        def dfs():
+            val = next(values)    # Get next value
+            if val == "#":        # Base case: null node
+                return None
+            node = TreeNode(int(val))  # Create new node
+            node.left = dfs()          # Build left subtree
+            node.right = dfs()         # Build right subtree
+            return node
+        
+        values = iter(data.split(','))
+        return dfs()</code></pre>
+            </div>
+
+            <div class="implementation">
+                <h3>2. Level-order BFS Method</h3>
+                <h4>Code Explanation:</h4>
+                <ul>
+                    <li>Serialization:
+                        <ul>
+                            <li>Uses breadth-first search with a queue</li>
+                            <li>Processes nodes level by level</li>
+                            <li>Adds children to queue even if null</li>
+                        </ul>
+                    </li>
+                    <li>Deserialization:
+                        <ul>
+                            <li>Creates root from first value</li>
+                            <li>Uses queue to track parent nodes</li>
+                            <li>Assigns left and right children sequentially</li>
+                        </ul>
+                    </li>
+                </ul>
+                <pre><code class="language-python">
+from collections import deque
+
+class Codec:
+    def serialize(self, root):  # Step-by-step serialization
+        if not root:            # Handle empty tree
+            return ""
+        result = []
+        queue = deque([root])   # Initialize queue with root
+        
+        while queue:            # Process level by level
+            node = queue.popleft()
+            if node:            # Current node exists
+                result.append(str(node.val))
+                queue.append(node.left)   # Add children to queue
+                queue.append(node.right)
+            else:              # Null node
+                result.append("#")
+        return ','.join(result)
+
+    def deserialize(self, data):  # Step-by-step deserialization
+        if not data:             # Handle empty string
+            return None
+        values = data.split(',')
+        root = TreeNode(int(values[0]))  # Create root
+        queue = deque([root])
+        i = 1                    # Index for values array
+        
+        while queue:            # Reconstruct level by level
+            node = queue.popleft()
+            if values[i] != "#":  # Create left child if not null
+                node.left = TreeNode(int(values[i]))
+                queue.append(node.left)
+            i += 1
+            if values[i] != "#":  # Create right child if not null
+                node.right = TreeNode(int(values[i]))
+                queue.append(node.right)
+            i += 1
+        return root</code></pre>
+            </div>
+
+            <div class="note">
+                <h3>Example:</h3>
+                <p>Consider this tree:</p>
+                <pre>
+     1
+   /   \
+  2     3
+ / \
+4   5</pre>
+                <p><strong>Preorder output:</strong> "1,2,4,#,#,5,#,#,3,#,#"</p>
+                <p><strong>Level-order output:</strong> "1,2,3,4,5,#,#,#,#,#,#"</p>
+            </div>
+
+            <div class="implementation">
+                <h3>Complexity Analysis</h3>
+                <table>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Time</th>
+                        <th>Space</th>
+                        <th>Notes</th>
+                    </tr>
+                    <tr>
+                        <td>Preorder Serialization</td>
+                        <td>O(n)</td>
+                        <td>O(h)</td>
+                        <td>h = height (recursion stack)</td>
+                    </tr>
+                    <tr>
+                        <td>Preorder Deserialization</td>
+                        <td>O(n)</td>
+                        <td>O(h)</td>
+                        <td>Recursive tree construction</td>
+                    </tr>
+                    <tr>
+                        <td>Level-order Serialization</td>
+                        <td>O(n)</td>
+                        <td>O(w)</td>
+                        <td>w = max width (queue size)</td>
+                    </tr>
+                    <tr>
+                        <td>Level-order Deserialization</td>
+                        <td>O(n)</td>
+                        <td>O(w)</td>
+                        <td>Queue-based reconstruction</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+      <section id="lca" class="section">
+    <h2>Lowest Common Ancestor (LCA) & Distances</h2>
+    
+    <div class="implementation">
+        <h3>Theory</h3>
+        <ul>
+            <li>The Lowest Common Ancestor (LCA) of two nodes in a tree is the deepest node that is an ancestor of both nodes</li>
+            <li>Properties:
+                <ul>
+                    <li>LCA exists and is unique for any two nodes in a tree</li>
+                    <li>A node can be its own ancestor</li>
+                    <li>The distance between any two nodes can be calculated using their LCA</li>
+                </ul>
+            </li>
+            <li>Distance Formula: Distance(u,v) = Depth(u) + Depth(v) - 2 × Depth(LCA(u,v))</li>
+        </ul>
+    </div>
+
+    <div class="implementation">
+        <h3>Step-by-Step: Binary Lifting Method</h3>
+        <h4>Preprocessing:</h4>
+        <ol>
+            <li>Build a parent matrix where dp[i][j] is the 2^j-th ancestor of node i</li>
+            <li>Calculate depth for each node using DFS</li>
+            <li>Fill the parent matrix using dynamic programming</li>
+        </ol>
+        <h4>Query:</h4>
+        <ol>
+            <li>Level the nodes to the same depth by lifting the deeper node</li>
+            <li>Binary lift both nodes simultaneously until finding the LCA</li>
+            <li>Calculate distance using the formula</li>
+        </ol>
+        <pre><code class="language-python">
+class TreeLCA:
+    def __init__(self, n):
+        self.n = n
+        self.max_log = n.bit_length()
+        self.adj = [[] for _ in range(n)]
+        self.parent = [[-1] * self.max_log for _ in range(n)]
+        self.depth = [0] * n
+    
+    def add_edge(self, u, v):
+        self.adj[u].append(v)
+        self.adj[v].append(u)
+    
+    def preprocess(self, root=0):
+        def dfs(node, par, d):
+            self.depth[node] = d
+            self.parent[node][0] = par
+            
+            # Calculate 2^j-th ancestors
+            for j in range(1, self.max_log):
+                if self.parent[node][j-1] != -1:
+                    self.parent[node][j] = self.parent[self.parent[node][j-1]][j-1]
+            
+            for child in self.adj[node]:
+                if child != par:
+                    dfs(child, node, d + 1)
+                    
+        dfs(root, -1, 0)
+    
+    def lca(self, u, v):
+        # Make u the deeper node
+        if self.depth[u] < self.depth[v]:
+            u, v = v, u
+            
+        # Level up u to same depth as v
+        diff = self.depth[u] - self.depth[v]
+        for i in range(self.max_log):
+            if diff & (1 << i):
+                u = self.parent[u][i]
+        
+        if u == v:
+            return u
+            
+        # Binary lift both nodes
+        for i in range(self.max_log-1, -1, -1):
+            if self.parent[u][i] != self.parent[v][i]:
+                u = self.parent[u][i]
+                v = self.parent[v][i]
+        
+        return self.parent[u][0]
+    
+    def distance(self, u, v):
+        lca_node = self.lca(u, v)
+        return self.depth[u] + self.depth[v] - 2 * self.depth[lca_node]</code></pre>
+    </div>
+
+    <div class="note">
+        <h3>Visualization</h3>
+        <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+            <!-- Tree structure -->
+            <g fill="#fff" stroke="#333" stroke-width="2">
+                <!-- Nodes -->
+                <circle cx="250" cy="50" r="20"/>
+                <circle cx="150" cy="120" r="20"/>
+                <circle cx="350" cy="120" r="20"/>
+                <circle cx="100" cy="190" r="20"/>
+                <circle cx="200" cy="190" r="20"/>
+                <circle cx="300" cy="190" r="20"/>
+                <circle cx="400" cy="190" r="20"/>
+                
+                <!-- Edges -->
+                <line x1="250" y1="70" x2="150" y2="100"/>
+                <line x1="250" y1="70" x2="350" y2="100"/>
+                <line x1="150" y1="140" x2="100" y2="170"/>
+                <line x1="150" y1="140" x2="200" y2="170"/>
+                <line x1="350" y1="140" x2="300" y2="170"/>
+                <line x1="350" y1="140" x2="400" y2="170"/>
+            </g>
+            
+            <!-- Node labels -->
+            <g fill="#333" font-size="14" text-anchor="middle">
+                <text x="250" y="55">1</text>
+                <text x="150" y="125">2</text>
+                <text x="350" y="125">3</text>
+                <text x="100" y="195">4</text>
+                <text x="200" y="195">5</text>
+                <text x="300" y="195">6</text>
+                <text x="400" y="195">7</text>
+            </g>
+            
+            <!-- LCA highlight -->
+            <circle cx="150" cy="120" r="25" fill="none" stroke="#e74c3c" stroke-width="2"/>
+            
+            <!-- Path highlights -->
+            <path d="M100,190 L150,120 L200,190" fill="none" stroke="#3498db" stroke-width="3" stroke-dasharray="5,5"/>
+        </svg>
+        <p>Example: In this tree, LCA(4,5) = 2, and distance(4,5) = 2 (moves from 4→2→5)</p>
+    </div>
+
+    <div class="implementation">
+        <h3>Complexity Analysis</h3>
+        <table>
+            <tr>
+                <th>Operation</th>
+                <th>Time</th>
+                <th>Space</th>
+                <th>Notes</th>
+            </tr>
+            <tr>
+                <td>Preprocessing</td>
+                <td>O(n log n)</td>
+                <td>O(n log n)</td>
+                <td>Building parent matrix</td>
+            </tr>
+            <tr>
+                <td>LCA Query</td>
+                <td>O(log n)</td>
+                <td>O(1)</td>
+                <td>Binary lifting operation</td>
+            </tr>
+            <tr>
+                <td>Distance Query</td>
+                <td>O(log n)</td>
+                <td>O(1)</td>
+                <td>One LCA query + constant operations</td>
+            </tr>
+            <tr>
+                <td>Memory</td>
+                <td>-</td>
+                <td>O(n log n)</td>
+                <td>Parent matrix storage</td>
+            </tr>
+        </table>
+    </div>
+</section>  
+<section id="traversals" class="section">
+    <h2>Tree Traversals</h2>
+    
+    <div class="implementation">
+        <h3>Theory</h3>
+        <ul>
+            <li>Tree traversal is the process of visiting each node in a tree data structure exactly once</li>
+            <li>Primary Types:
+                <ul>
+                    <li>Depth First Search (DFS)
+                        <ul>
+                            <li>Preorder: Root → Left → Right</li>
+                            <li>Inorder: Left → Root → Right</li>
+                            <li>Postorder: Left → Right → Root</li>
+                        </ul>
+                    </li>
+                    <li>Breadth First Search (BFS)
+                        <ul>
+                            <li>Level Order: Visit nodes level by level</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="implementation">
+        <h3>Step-by-Step: Depth First Traversals</h3>
+        <pre><code class="language-python">
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+# Recursive implementations
+def preorder_recursive(root):
+    if not root:
+        return []
+    return [root.val] + preorder_recursive(root.left) + preorder_recursive(root.right)
+
+def inorder_recursive(root):
+    if not root:
+        return []
+    return inorder_recursive(root.left) + [root.val] + inorder_recursive(root.right)
+
+def postorder_recursive(root):
+    if not root:
+        return []
+    return postorder_recursive(root.left) + postorder_recursive(root.right) + [root.val]
+
+# Iterative implementations
+def preorder_iterative(root):
+    if not root:
+        return []
+    result = []
+    stack = [root]
+    while stack:
+        node = stack.pop()
+        result.append(node.val)
+        if node.right:
+            stack.append(node.right)
+        if node.left:
+            stack.append(node.left)
+    return result
+
+def inorder_iterative(root):
+    result = []
+    stack = []
+    current = root
+    while stack or current:
+        while current:
+            stack.append(current)
+            current = current.left
+        current = stack.pop()
+        result.append(current.val)
+        current = current.right
+    return result
+
+def postorder_iterative(root):
+    if not root:
+        return []
+    result = []
+    stack1 = [root]
+    stack2 = []
+    while stack1:
+        node = stack1.pop()
+        stack2.append(node)
+        if node.left:
+            stack1.append(node.left)
+        if node.right:
+            stack1.append(node.right)
+    while stack2:
+        result.append(stack2.pop().val)
+    return result</code></pre>
+    </div>
+
+    <div class="note">
+        <h3>Traversal Visualization</h3>
+        <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+            <!-- Tree structure -->
+            <g transform="translate(50,0)">
+                <!-- First tree - Preorder -->
+                <g transform="translate(0,0)">
+                    <g fill="#fff" stroke="#333" stroke-width="2">
+                        <circle cx="150" cy="50" r="20"/>
+                        <circle cx="100" cy="120" r="20"/>
+                        <circle cx="200" cy="120" r="20"/>
+                        
+                        <line x1="150" y1="70" x2="100" y2="100"/>
+                        <line x1="150" y1="70" x2="200" y2="100"/>
+                    </g>
+                    <g fill="#333" font-size="14" text-anchor="middle">
+                        <text x="150" y="55">1①</text>
+                        <text x="100" y="125">2②</text>
+                        <text x="200" y="125">3③</text>
+                    </g>
+                    <text x="150" y="170" text-anchor="middle" font-size="16">Preorder: 1,2,3</text>
+                </g>
+
+                <!-- Second tree - Inorder -->
+                <g transform="translate(250,0)">
+                    <g fill="#fff" stroke="#333" stroke-width="2">
+                        <circle cx="150" cy="50" r="20"/>
+                        <circle cx="100" cy="120" r="20"/>
+                        <circle cx="200" cy="120" r="20"/>
+                        
+                        <line x1="150" y1="70" x2="100" y2="100"/>
+                        <line x1="150" y1="70" x2="200" y2="100"/>
+                    </g>
+                    <g fill="#333" font-size="14" text-anchor="middle">
+                        <text x="150" y="55">1②</text>
+                        <text x="100" y="125">2①</text>
+                        <text x="200" y="125">3③</text>
+                    </g>
+                    <text x="150" y="170" text-anchor="middle" font-size="16">Inorder: 2,1,3</text>
+                </g>
+
+                <!-- Third tree - Postorder -->
+                <g transform="translate(500,0)">
+                    <g fill="#fff" stroke="#333" stroke-width="2">
+                        <circle cx="150" cy="50" r="20"/>
+                        <circle cx="100" cy="120" r="20"/>
+                        <circle cx="200" cy="120" r="20"/>
+                        
+                        <line x1="150" y1="70" x2="100" y2="100"/>
+                        <line x1="150" y1="70" x2="200" y2="100"/>
+                    </g>
+                    <g fill="#333" font-size="14" text-anchor="middle">
+                        <text x="150" y="55">1③</text>
+                        <text x="100" y="125">2①</text>
+                        <text x="200" y="125">3②</text>
+                    </g>
+                    <text x="150" y="170" text-anchor="middle" font-size="16">Postorder: 2,3,1</text>
+                </g>
+            </g>
+
+            <!-- Animation path for traversal demonstration -->
+            <g transform="translate(50,200)">
+                <g fill="#fff" stroke="#333" stroke-width="2">
+                    <circle cx="150" cy="50" r="20"/>
+                    <circle cx="100" cy="120" r="20"/>
+                    <circle cx="200" cy="120" r="20"/>
+                    <circle cx="50" cy="190" r="20"/>
+                    <circle cx="150" cy="190" r="20"/>
+                    
+                    <line x1="150" y1="70" x2="100" y2="100"/>
+                    <line x1="150" y1="70" x2="200" y2="100"/>
+                    <line x1="100" y1="140" x2="50" y2="170"/>
+                    <line x1="100" y1="140" x2="150" y2="170"/>
+                </g>
+                <g fill="#333" font-size="14" text-anchor="middle">
+                    <text x="150" y="55">1</text>
+                    <text x="100" y="125">2</text>
+                    <text x="200" y="125">3</text>
+                    <text x="50" y="195">4</text>
+                    <text x="150" y="195">5</text>
+                </g>
+                
+                <!-- Level order path -->
+                <path d="M150,50 L100,120 L200,120 L50,190 L150,190" 
+                      fill="none" stroke="#3498db" stroke-width="2" 
+                      stroke-dasharray="5,5"/>
+                <text x="150" y="240" text-anchor="middle" font-size="16">
+                    Level Order: 1 → 2 → 3 → 4 → 5
+                </text>
+            </g>
+        </svg>
+    </div>
+
+    <div class="implementation">
+        <h3>Complexity Analysis</h3>
+        <table>
+            <tr>
+                <th>Traversal Type</th>
+                <th>Time</th>
+                <th>Space</th>
+                <th>Notes</th>
+            </tr>
+            <tr>
+                <td>Recursive DFS</td>
+                <td>O(n)</td>
+                <td>O(h)</td>
+                <td>h = height (recursion stack)</td>
+            </tr>
+            <tr>
+                <td>Iterative DFS</td>
+                <td>O(n)</td>
+                <td>O(h)</td>
+                <td>h = height (explicit stack)</td>
+            </tr>
+            <tr>
+                <td>BFS</td>
+                <td>O(n)</td>
+                <td>O(w)</td>
+                <td>w = max width (queue size)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="implementation">
+        <h3>Applications</h3>
+        <ul>
+            <li>Preorder:
+                <ul>
+                    <li>Creating a copy of the tree</li>
+                    <li>Serializing or storing a tree structure</li>
+                    <li>Getting prefix expression of an expression tree</li>
+                </ul>
+            </li>
+            <li>Inorder:
+                <ul>
+                    <li>Getting sorted elements from a BST</li>
+                    <li>Validating BST properties</li>
+                </ul>
+            </li>
+            <li>Postorder:
+                <ul>
+                    <li>Deleting nodes and cleaning up resources</li>
+                    <li>Getting postfix expression of an expression tree</li>
+                </ul>
+            </li>
+            <li>Level Order:
+                <ul>
+                    <li>Level-wise processing</li>
+                    <li>Finding shortest paths in unweighted trees</li>
+                    <li>Tree visualization</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</section>
+<section id="level-order" class="section">
+    <h2>Level-Order Traversal</h2>
+    
+    <div class="implementation">
+        <h3>Theory</h3>
+        <ul>
+            <li>Level-order traversal processes nodes level by level from left to right</li>
+            <li>Key characteristics:
+                <ul>
+                    <li>Uses a queue data structure for processing</li>
+                    <li>Visits all nodes at current depth before moving to next level</li>
+                    <li>Maintains breadth-first search (BFS) properties</li>
+                    <li>Preserves level-wise relationships between nodes</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="implementation">
+        <h3>Step-by-Step Implementation</h3>
+        <pre><code class="language-python">
+from collections import deque
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+# Basic level-order traversal
+def level_order_basic(root):
+    if not root:
+        return []
+    result = []
+    queue = deque([root])
+    
+    while queue:
+        node = queue.popleft()
+        result.append(node.val)
+        if node.left:
+            queue.append(node.left)
+        if node.right:
+            queue.append(node.right)
+    return result
+
+# Level-order traversal with level grouping
+def level_order_grouped(root):
+    if not root:
+        return []
+    result = []
+    queue = deque([root])
+    
+    while queue:
+        level_size = len(queue)
+        current_level = []
+        
+        for _ in range(level_size):
+            node = queue.popleft()
+            current_level.append(node.val)
+            
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+                
+        result.append(current_level)
+    return result
+
+# Zigzag level-order traversal
+def zigzag_level_order(root):
+    if not root:
+        return []
+    result = []
+    queue = deque([root])
+    left_to_right = True
+    
+    while queue:
+        level_size = len(queue)
+        current_level = []
+        
+        for _ in range(level_size):
+            node = queue.popleft()
+            
+            if left_to_right:
+                current_level.append(node.val)
+            else:
+                current_level.insert(0, node.val)
+                
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+                
+        result.append(current_level)
+        left_to_right = not left_to_right
+    return result</code></pre>
+    </div>
+
+    <div class="note">
+        <h3>Visualization</h3>
+        <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+            <!-- Tree structure -->
+            <g transform="translate(50,50)">
+                <!-- Regular level order -->
+                <g>
+                    <g fill="#fff" stroke="#333" stroke-width="2">
+                        <circle cx="150" cy="50" r="20"/>
+                        <circle cx="75" cy="120" r="20"/>
+                        <circle cx="225" cy="120" r="20"/>
+                        <circle cx="25" cy="190" r="20"/>
+                        <circle cx="125" cy="190" r="20"/>
+                        <circle cx="175" cy="190" r="20"/>
+                        <circle cx="275" cy="190" r="20"/>
+                        
+                        <line x1="150" y1="70" x2="75" y2="100"/>
+                        <line x1="150" y1="70" x2="225" y2="100"/>
+                        <line x1="75" y1="140" x2="25" y2="170"/>
+                        <line x1="75" y1="140" x2="125" y2="170"/>
+                        <line x1="225" y1="140" x2="175" y2="170"/>
+                        <line x1="225" y1="140" x2="275" y2="170"/>
+                    </g>
+                    
+                    <!-- Level indicators -->
+                    <path d="M10,50 L290,50" stroke="#3498db" stroke-width="2" stroke-dasharray="5,5" opacity="0.3"/>
+                    <path d="M10,120 L290,120" stroke="#e74c3c" stroke-width="2" stroke-dasharray="5,5" opacity="0.3"/>
+                    <path d="M10,190 L290,190" stroke="#2ecc71" stroke-width="2" stroke-dasharray="5,5" opacity="0.3"/>
+                    
+                    <!-- Node labels -->
+                    <g fill="#333" font-size="14" text-anchor="middle">
+                        <text x="150" y="55">1①</text>
+                        <text x="75" y="125">2②</text>
+                        <text x="225" y="125">3③</text>
+                        <text x="25" y="195">4④</text>
+                        <text x="125" y="195">5⑤</text>
+                        <text x="175" y="195">6⑥</text>
+                        <text x="275" y="195">7⑦</text>
+                    </g>
+                    
+                    <text x="150" y="240" text-anchor="middle" font-size="16">Regular Level Order: 1,2,3,4,5,6,7</text>
+                </g>
+            </g>
+
+            <!-- Zigzag traversal -->
+            <g transform="translate(400,50)">
+                <g fill="#fff" stroke="#333" stroke-width="2">
+                    <circle cx="150" cy="50" r="20"/>
+                    <circle cx="75" cy="120" r="20"/>
+                    <circle cx="225" cy="120" r="20"/>
+                    <circle cx="25" cy="190" r="20"/>
+                    <circle cx="125" cy="190" r="20"/>
+                    <circle cx="175" cy="190" r="20"/>
+                    <circle cx="275" cy="190" r="20"/>
+                    
+                    <line x1="150" y1="70" x2="75" y2="100"/>
+                    <line x1="150" y1="70" x2="225" y2="100"/>
+                    <line x1="75" y1="140" x2="25" y2="170"/>
+                    <line x1="75" y1="140" x2="125" y2="170"/>
+                    <line x1="225" y1="140" x2="175" y2="170"/>
+                    <line x1="225" y1="140" x2="275" y2="170"/>
+                </g>
+                
+                <!-- Zigzag path -->
+                <path d="M150,50 L75,120 L225,120 L275,190 L175,190 L125,190 L25,190" 
+                      fill="none" stroke="#9b59b6" stroke-width="2" 
+                      stroke-dasharray="5,5"/>
+                
+                <!-- Node labels -->
+                <g fill="#333" font-size="14" text-anchor="middle">
+                    <text x="150" y="55">1①</text>
+                    <text x="75" y="125">2②</text>
+                    <text x="225" y="125">3③</text>
+                    <text x="25" y="195">7⑦</text>
+                    <text x="125" y="195">6⑥</text>
+                    <text x="175" y="195">5⑤</text>
+                    <text x="275" y="195">4④</text>
+                </g>
+                
+                <text x="150" y="240" text-anchor="middle" font-size="16">Zigzag Level Order: 1,2,3,7,6,5,4</text>
+            </g>
+        </svg>
+    </div>
+
+    <div class="implementation">
+        <h3>Complexity Analysis</h3>
+        <table>
+            <tr>
+                <th>Operation</th>
+                <th>Time</th>
+                <th>Space</th>
+                <th>Notes</th>
+            </tr>
+            <tr>
+                <td>Basic Level Order</td>
+                <td>O(n)</td>
+                <td>O(w)</td>
+                <td>w = maximum width of tree</td>
+            </tr>
+            <tr>
+                <td>Grouped Level Order</td>
+                <td>O(n)</td>
+                <td>O(w)</td>
+                <td>Additional space for level arrays</td>
+            </tr>
+            <tr>
+                <td>Zigzag Level Order</td>
+                <td>O(n)</td>
+                <td>O(w)</td>
+                <td>Extra operations for direction switching</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="implementation">
+        <h3>Common Applications</h3>
+        <ul>
+            <li>Tree visualization and printing</li>
+            <li>Finding shortest path in unweighted trees</li>
+            <li>Level-wise tree processing</li>
+            <li>Vertical order traversal</li>
+            <li>Tree serialization and deserialization</li>
+            <li>Computing tree width and density</li>
+        </ul>
+    </div>
+</section>
+<section id="construction" class="section">
+    <h2>Tree Construction</h2>
+    
+    <div class="implementation">
+        <h3>Theory</h3>
+        <ul>
+            <li>Tree construction involves building a tree from various input formats:
+                <ul>
+                    <li>Traversal pairs (preorder + inorder, postorder + inorder)</li>
+                    <li>Level-order sequence</li>
+                    <li>Parent array representation</li>
+                    <li>String representations (e.g., bracketed expressions)</li>
+                </ul>
+            </li>
+            <li>Key Properties:
+                <ul>
+                    <li>Inorder traversal is required with either preorder or postorder to uniquely construct a binary tree</li>
+                    <li>Level-order sequence requires null markers for empty children</li>
+                    <li>Parent array provides direct relationships between nodes</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="implementation">
+        <h3>Step-by-Step Implementations</h3>
+        <pre><code class="language-python">
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+# Construction from preorder and inorder traversals
+def buildTree_preorder_inorder(preorder, inorder):
+    if not preorder or not inorder:
+        return None
+    
+    root = TreeNode(preorder[0])
+    mid = inorder.index(preorder[0])
+    
+    root.left = buildTree_preorder_inorder(
+        preorder[1:mid + 1],
+        inorder[:mid]
+    )
+    root.right = buildTree_preorder_inorder(
+        preorder[mid + 1:],
+        inorder[mid + 1:]
+    )
+    return root
+
+# Construction from postorder and inorder traversals
+def buildTree_postorder_inorder(postorder, inorder):
+    if not postorder or not inorder:
+        return None
+    
+    root = TreeNode(postorder[-1])
+    mid = inorder.index(postorder[-1])
+    
+    root.left = buildTree_postorder_inorder(
+        postorder[:mid],
+        inorder[:mid]
+    )
+    root.right = buildTree_postorder_inorder(
+        postorder[mid:-1],
+        inorder[mid + 1:]
+    )
+    return root
+
+# Construction from level-order traversal
+def buildTree_level_order(level_order):
+    if not level_order or level_order[0] is None:
+        return None
+        
+    root = TreeNode(level_order[0])
+    queue = deque([root])
+    i = 1
+    
+    while queue and i < len(level_order):
+        node = queue.popleft()
+        
+        if i < len(level_order) and level_order[i] is not None:
+            node.left = TreeNode(level_order[i])
+            queue.append(node.left)
+        i += 1
+        
+        if i < len(level_order) and level_order[i] is not None:
+            node.right = TreeNode(level_order[i])
+            queue.append(node.right)
+        i += 1
+            
+    return root
+
+# Construction from parent array
+def buildTree_parent_array(parent):
+    n = len(parent)
+    nodes = [TreeNode(i) for i in range(n)]
+    root = None
+    
+    for i in range(n):
+        if parent[i] == -1:
+            root = nodes[i]
+        else:
+            p = nodes[parent[i]]
+            if not p.left:
+                p.left = nodes[i]
+            else:
+                p.right = nodes[i]
+                
+    return root</code></pre>
+    </div>
+
+    <div class="note">
+        <h3>Construction Visualization</h3>
+        <svg viewBox="0 0 900 450" xmlns="http://www.w3.org/2000/svg">
+            <!-- Preorder + Inorder -->
+            <g transform="translate(50,20)">
+                <text x="125" y="30" text-anchor="middle" font-size="14" font-weight="bold">Preorder + Inorder Construction</text>
+                
+                <!-- Input arrays -->
+                <rect x="20" y="40" width="200" height="30" fill="#ecf0f1" stroke="#34495e"/>
+                <text x="120" y="60" text-anchor="middle" font-size="12">Preorder: [3,9,20,15,7]</text>
+                <rect x="20" y="80" width="200" height="30" fill="#ecf0f1" stroke="#34495e"/>
+                <text x="120" y="100" text-anchor="middle" font-size="12">Inorder: [9,3,15,20,7]</text>
+                
+                <!-- Resulting tree -->
+                <g transform="translate(0,120)">
+                    <g fill="#fff" stroke="#333" stroke-width="2">
+                        <circle cx="120" cy="30" r="20"/>
+                        <circle cx="60" cy="90" r="20"/>
+                        <circle cx="180" cy="90" r="20"/>
+                        <circle cx="140" cy="150" r="20"/>
+                        <circle cx="220" cy="150" r="20"/>
+                        
+                        <line x1="120" y1="50" x2="60" y2="70"/>
+                        <line x1="120" y1="50" x2="180" y2="70"/>
+                        <line x1="180" y1="110" x2="140" y2="130"/>
+                        <line x1="180" y1="110" x2="220" y2="130"/>
+                    </g>
+                    
+                    <g fill="#333" font-size="14" text-anchor="middle">
+                        <text x="120" y="35">3</text>
+                        <text x="60" y="95">9</text>
+                        <text x="180" y="95">20</text>
+                        <text x="140" y="155">15</text>
+                        <text x="220" y="155">7</text>
+                    </g>
+                </g>
+            </g>
+            
+            <!-- Level Order Construction -->
+            <g transform="translate(350,20)">
+                <text x="125" y="30" text-anchor="middle" font-size="14" font-weight="bold">Level Order Construction</text>
+                
+                <!-- Input array -->
+                <rect x="20" y="40" width="200" height="30" fill="#ecf0f1" stroke="#34495e"/>
+                <text x="120" y="60" text-anchor="middle" font-size="12">Level Order: [1,2,3,4,5,null,7]</text>
+                
+                <!-- Step by step construction -->
+                <g transform="translate(0,120)">
+                    <g fill="#fff" stroke="#333" stroke-width="2">
+                        <circle cx="120" cy="30" r="20"/>
+                        <circle cx="60" cy="90" r="20"/>
+                        <circle cx="180" cy="90" r="20"/>
+                        <circle cx="30" cy="150" r="20"/>
+                        <circle cx="90" cy="150" r="20"/>
+                        <circle cx="220" cy="150" r="20"/>
+                        
+                        <line x1="120" y1="50" x2="60" y2="70"/>
+                        <line x1="120" y1="50" x2="180" y2="70"/>
+                        <line x1="60" y1="110" x2="30" y2="130"/>
+                        <line x1="60" y1="110" x2="90" y2="130"/>
+                        <line x1="180" y1="110" x2="220" y2="130"/>
+                    </g>
+                    
+                    <g fill="#333" font-size="14" text-anchor="middle">
+                        <text x="120" y="35">1</text>
+                        <text x="60" y="95">2</text>
+                        <text x="180" y="95">3</text>
+                        <text x="30" y="155">4</text>
+                        <text x="90" y="155">5</text>
+                        <text x="220" y="155">7</text>
+                    </g>
+                </g>
+            </g>
+            
+            <!-- Parent Array Construction -->
+            <g transform="translate(650,20)">
+                <text x="125" y="30" text-anchor="middle" font-size="14" font-weight="bold">Parent Array Construction</text>
+                
+                <!-- Input array -->
+                <rect x="20" y="40" width="200" height="30" fill="#ecf0f1" stroke="#34495e"/>
+                <text x="120" y="60" text-anchor="middle" font-size="12">Parent Array: [-1,0,0,1,1,2,2]</text>
+                
+                <!-- Resulting tree -->
+                <g transform="translate(0,120)">
+                    <g fill="#fff" stroke="#333" stroke-width="2">
+                        <circle cx="120" cy="30" r="20"/>
+                        <circle cx="60" cy="90" r="20"/>
+                        <circle cx="180" cy="90" r="20"/>
+                        <circle cx="30" cy="150" r="20"/>
+                        <circle cx="90" cy="150" r="20"/>
+                        <circle cx="150" cy="150" r="20"/>
+                        <circle cx="210" cy="150" r="20"/>
+                        
+                        <line x1="120" y1="50" x2="60" y2="70"/>
+                        <line x1="120" y1="50" x2="180" y2="70"/>
+                        <line x1="60" y1="110" x2="30" y2="130"/>
+                        <line x1="60" y1="110" x2="90" y2="130"/>
+                        <line x1="180" y1="110" x2="150" y2="130"/>
+                        <line x1="180" y1="110" x2="210" y2="130"/>
+                    </g>
+                    
+                    <g fill="#333" font-size="14" text-anchor="middle">
+                        <text x="120" y="35">0</text>
+                        <text x="60" y="95">1</text>
+                        <text x="180" y="95">2</text>
+                        <text x="30" y="155">3</text>
+                        <text x="90" y="155">4</text>
+                        <text x="150" y="155">5</text>
+                        <text x="210" y="155">6</text>
+                    </g>
+                </g>
+            </g>
+        </svg>
+    </div>
+
+    <div class="implementation">
+        <h3>Complexity Analysis</h3>
+        <table>
+            <tr>
+                <th>Construction Method</th>
+                <th>Time</th>
+                <th>Space</th>
+                <th>Notes</th>
+            </tr>
+            <tr>
+                <td>Preorder + Inorder</td>
+                <td>O(n)</td>
+                <td>O(h)</td>
+                <td>h = height (recursion stack)</td>
+            </tr>
+            <tr>
+                <td>Postorder + Inorder</td>
+                <td>O(n)</td>
+                <td>O(h)</td>
+                <td>Similar to preorder + inorder</td>
+            </tr>
+            <tr>
+                <td>Level Order</td>
+                <td>O(n)</td>
+                <td>O(w)</td>
+                <td>w = max width (queue size)</td>
+            </tr>
+            <tr>
+                <td>Parent Array</td>
+                <td>O(n)</td>
+                <td>O(n)</td>
+                <td>Requires array of node references</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="implementation">
+        <h3>Key Considerations</h3>
+        <ul>
+            <li>Tree uniqueness:
+                <ul>
+                    <li>A single traversal sequence is insufficient to construct a unique tree</li>
+                    <li>Inorder traversal must be paired with either preorder or postorder</li>
+                    <li>Level-order requires explicit null markers for empty children</li>
+                </ul>
+            </li>
+            <li>Special cases:
+                <ul>
+                    <li>Empty trees (null inputs)</li>
+                    <li>Single-node trees</li>
+                    <li>Unbalanced trees</li>
+                    <li>Duplicate values (may require unique identifiers)</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</section>
+<section id="removal" class="section">
+    <h2>Tree Removal & Trimming</h2>
+    
+    <div class="implementation">
+        <h3>Theory</h3>
+        <ul>
+            <li>Tree removal and trimming operations:
+                <ul>
+                    <li>Remove individual nodes</li>
+                    <li>Trim nodes outside a range (for BST)</li>
+                    <li>Remove entire subtrees</li>
+                    <li>Prune leaves based on conditions</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="implementation">
+        <h3>Implementation</h3>
+        <pre><code class="language-python">
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+# Remove node from BST
+def deleteNode(root, key):
+    if not root:
+        return None
+        
+    if key < root.val:
+        root.left = deleteNode(root.left, key)
+    elif key > root.val:
+        root.right = deleteNode(root.right, key)
+    else:
+        if not root.left:
+            return root.right
+        elif not root.right:
+            return root.left
+            
+        # Node with two children
+        min_node = findMin(root.right)
+        root.val = min_node.val
+        root.right = deleteNode(root.right, min_node.val)
+    
+    return root
+
+def findMin(node):
+    current = node
+    while current.left:
+        current = current.left
+    return current
+
+# Trim BST within range
+def trimBST(root, low, high):
+    if not root:
+        return None
+        
+    if root.val < low:
+        return trimBST(root.right, low, high)
+    if root.val > high:
+        return trimBST(root.left, low, high)
+        
+    root.left = trimBST(root.left, low, high)
+    root.right = trimBST(root.right, low, high)
+    return root
+
+# Remove leaves with specific value
+def removeLeaves(root, target):
+    if not root:
+        return None
+        
+    root.left = removeLeaves(root.left, target)
+    root.right = removeLeaves(root.right, target)
+    
+    if not root.left and not root.right and root.val == target:
+        return None
+    return root
+
+# Prune subtree with sum less than limit
+def pruneSubtrees(root, limit):
+    if not root:
+        return None
+        
+    root.left = pruneSubtrees(root.left, limit)
+    root.right = pruneSubtrees(root.right, limit)
+    
+    if not root.left and not root.right:
+        return root if root.val >= limit else None
+        
+    return root</code></pre>
+    </div>
+
+    <div class="note">
+        <h3>Visualization</h3>
+        <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+            <!-- Node Removal -->
+            <g transform="translate(50,20)">
+                <text x="125" y="30" text-anchor="middle" font-size="14" font-weight="bold">Node Removal (BST)</text>
+                
+                <!-- Before -->
+                <g transform="translate(0,50)">
+                    <text x="125" y="20" text-anchor="middle" font-size="12">Before</text>
+                    <g fill="#fff" stroke="#333" stroke-width="2">
+                        <circle cx="125" cy="50" r="20"/>
+                        <circle cx="75" cy="100" r="20"/>
+                        <circle cx="175" cy="100" r="20"/>
+                        <circle cx="50" cy="150" r="20"/>
+                        <circle cx="100" cy="150" r="20"/>
+                        
+                        <line x1="125" y1="70" x2="75" y2="80"/>
+                        <line x1="125" y1="70" x2="175" y2="80"/>
+                        <line x1="75" y1="120" x2="50" y2="130"/>
+                        <line x1="75" y1="120" x2="100" y2="130"/>
+                    </g>
+                    
+                    <g fill="#333" font-size="14" text-anchor="middle">
+                        <text x="125" y="55">5</text>
+                        <text x="75" y="105">3</text>
+                        <text x="175" y="105">7</text>
+                        <text x="50" y="155">2</text>
+                        <text x="100" y="155">4</text>
+                    </g>
+                </g>
+                
+                <!-- After -->
+                <g transform="translate(0,220)">
+                    <text x="125" y="20" text-anchor="middle" font-size="12">After (Remove 3)</text>
+                    <g fill="#fff" stroke="#333" stroke-width="2">
+                        <circle cx="125" cy="50" r="20"/>
+                        <circle cx="75" cy="100" r="20"/>
+                        <circle cx="175" cy="100" r="20"/>
+                        <circle cx="50" cy="150" r="20"/>
+                        
+                        <line x1="125" y1="70" x2="75" y2="80"/>
+                        <line x1="125" y1="70" x2="175" y2="80"/>
+                        <line x1="75" y1="120" x2="50" y2="130"/>
+                    </g>
+                    
+                    <g fill="#333" font-size="14" text-anchor="middle">
+                        <text x="125" y="55">5</text>
+                        <text x="75" y="105">4</text>
+                        <text x="175" y="105">7</text>
+                        <text x="50" y="155">2</text>
+                    </g>
+                </g>
+            </g>
+            
+            <!-- BST Trimming -->
+            <g transform="translate(400,20)">
+                <text x="125" y="30" text-anchor="middle" font-size="14" font-weight="bold">BST Trimming</text>
+                
+                <!-- Before -->
+                <g transform="translate(0,50)">
+                    <text x="125" y="20" text-anchor="middle" font-size="12">Before</text>
+                    <g fill="#fff" stroke="#333" stroke-width="2">
+                        <circle cx="125" cy="50" r="20"/>
+                        <circle cx="75" cy="100" r="20"/>
+                        <circle cx="175" cy="100" r="20"/>
+                        <circle cx="25" cy="150" r="20"/>
+                        <circle cx="125" cy="150" r="20"/>
+                        <circle cx="225" cy="150" r="20"/>
+                        
+                        <line x1="125" y1="70" x2="75" y2="80"/>
+                        <line x1="125" y1="70" x2="175" y2="80"/>
+                        <line x1="75" y1="120" x2="25" y2="130"/>
+                        <line x1="75" y1="120" x2="125" y2="130"/>
+                        <line x1="175" y1="120" x2="225" y2="130"/>
+                    </g>
+                    
+                    <g fill="#333" font-size="14" text-anchor="middle">
+                        <text x="125" y="55">7</text>
+                        <text x="75" y="105">3</text>
+                        <text x="175" y="105">10</text>
+                        <text x="25" y="155">1</text>
+                        <text x="125" y="155">5</text>
+                        <text x="225" y="155">12</text>
+                    </g>
+                </g>
+                
+                <!-- After -->
+                <g transform="translate(0,220)">
+                    <text x="125" y="20" text-anchor="middle" font-size="12">After (Trim 3-10)</text>
+                    <g fill="#fff" stroke="#333" stroke-width="2">
+                        <circle cx="125" cy="50" r="20"/>
+                        <circle cx="75" cy="100" r="20"/>
+                        <circle cx="175" cy="100" r="20"/>
+                        <circle cx="125" cy="150" r="20"/>
+                        
+                        <line x1="125" y1="70" x2="75" y2="80"/>
+                        <line x1="125" y1="70" x2="175" y2="80"/>
+                        <line x1="75" y1="120" x2="125" y2="130"/>
+                    </g>
+                    
+                    <g fill="#333" font-size="14" text-anchor="middle">
+                        <text x="125" y="55">7</text>
+                        <text x="75" y="105">3</text>
+                        <text x="175" y="105">10</text>
+                        <text x="125" y="155">5</text>
+                    </g>
+                </g>
+            </g>
+        </svg>
+    </div>
+
+    <div class="implementation">
+        <h3>Complexity Analysis</h3>
+        <table>
+            <tr>
+                <th>Operation</th>
+                <th>Time</th>
+                <th>Space</th>
+                <th>Notes</th>
+            </tr>
+            <tr>
+                <td>Node Removal (BST)</td>
+                <td>O(h)</td>
+                <td>O(h)</td>
+                <td>h = height of tree</td>
+            </tr>
+            <tr>
+                <td>BST Trimming</td>
+                <td>O(n)</td>
+                <td>O(h)</td>
+                <td>Must visit all nodes</td>
+            </tr>
+            <tr>
+                <td>Leaf Removal</td>
+                <td>O(n)</td>
+                <td>O(h)</td>
+                <td>Post-order traversal</td>
+            </tr>
+            <tr>
+                <td>Subtree Pruning</td>
+                <td>O(n)</td>
+                <td>O(h)</td>
+                <td>Bottom-up evaluation</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="implementation">
+        <h3>Key Considerations</h3>
+        <ul>
+            <li>Node removal in BST:
+                <ul>
+                    <li>Case 1: Leaf node - Simply remove</li>
+                    <li>Case 2: One child - Replace with child</li>
+                    <li>Case 3: Two children - Replace with successor</li>
+                </ul>
+            </li>
+            <li>Trimming considerations:
+                <ul>
+                    <li>BST property maintenance</li>
+                    <li>Range boundaries</li>
+                    <li>Parent-child reconnection</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</section>
+<section id="linked-list" class="section">
+    <h2>Tree to Linked List Conversion</h2>
+    
+    <div class="implementation">
+        <h3>Theory</h3>
+        <ul>
+            <li>Converting binary tree to:
+                <ul>
+                    <li>Singly linked list (using right pointers)</li>
+                    <li>Doubly linked list (using left/right as prev/next)</li>
+                    <li>Circular doubly linked list</li>
+                </ul>
+            </li>
+            <li>Common traversal orders:
+                <ul>
+                    <li>Inorder (sorted order for BST)</li>
+                    <li>Preorder (root-first linearization)</li>
+                    <li>Level-order (breadth-first)</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="implementation">
+        <h3>Implementation</h3>
+        <pre><code class="language-python">
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class DoublyListNode:
+    def __init__(self, val=0, prev=None, next=None):
+        self.val = val
+        self.prev = prev
+        self.next = next
+
+# Convert to singly linked list (inorder)
+def treeToSinglyList(root):
+    def inorder(node):
+        nonlocal prev
+        if not node:
+            return
+            
+        inorder(node.left)
+        
+        node.left = None
+        if prev:
+            prev.right = node
+        else:
+            head = node
+        prev = node
+        
+        inorder(node.right)
+        
+    if not root:
+        return None
+        
+    prev = None
+    head = None
+    inorder(root)
+    return head
+
+# Convert to doubly linked list (inorder)
+def treeToDoublyList(root):
+    def inorder(node):
+        nonlocal prev, head
+        if not node:
+            return
+            
+        inorder(node.left)
+        
+        if not head:
+            head = node
+        else:
+            node.prev = prev
+            prev.next = node
+        prev = node
+        
+        inorder(node.right)
+        
+    if not root:
+        return None
+        
+    head = None
+    prev = None
+    inorder(root)
+    
+    # Make it circular (optional)
+    head.prev = prev
+    prev.next = head
+    
+    return head</code></pre>
+    </div>
+
+    <div class="note">
+        <h3>Visualization</h3>
+        <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+            <!-- Original Tree -->
+            <g transform="translate(50,20)">
+                <text x="125" y="30" text-anchor="middle" font-size="14" font-weight="bold">Original BST</text>
+                <g fill="#fff" stroke="#333" stroke-width="2">
+                    <circle cx="125" cy="70" r="20"/>
+                    <circle cx="75" cy="120" r="20"/>
+                    <circle cx="175" cy="120" r="20"/>
+                    <circle cx="25" cy="170" r="20"/>
+                    <circle cx="125" cy="170" r="20"/>
+                    
+                    <line x1="125" y1="90" x2="75" y2="100"/>
+                    <line x1="125" y1="90" x2="175" y2="100"/>
+                    <line x1="75" y1="140" x2="25" y2="150"/>
+                    <line x1="75" y1="140" x2="125" y2="150"/>
+                </g>
+                
+                <g fill="#333" font-size="14" text-anchor="middle">
+                    <text x="125" y="75">4</text>
+                    <text x="75" y="125">2</text>
+                    <text x="175" y="125">5</text>
+                    <text x="25" y="175">1</text>
+                    <text x="125" y="175">3</text>
+                </g>
+            </g>
+            
+            <!-- Singly Linked List -->
+            <g transform="translate(350,70)">
+                <text x="125" y="30" text-anchor="middle" font-size="14" font-weight="bold">Singly Linked List</text>
+                <g fill="#fff" stroke="#333" stroke-width="2">
+                    <rect x="20" y="70" width="40" height="40" rx="5"/>
+                    <rect x="110" y="70" width="40" height="40" rx="5"/>
+                    <rect x="200" y="70" width="40" height="40" rx="5"/>
+                    <rect x="290" y="70" width="40" height="40" rx="5"/>
+                    <rect x="380" y="70" width="40" height="40" rx="5"/>
+                    
+                    <!-- Arrows -->
+                    <path d="M60,90 L110,90" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    <path d="M150,90 L200,90" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    <path d="M240,90 L290,90" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    <path d="M330,90 L380,90" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                </g>
+                
+                <g fill="#333" font-size="14" text-anchor="middle">
+                    <text x="40" y="95">1</text>
+                    <text x="130" y="95">2</text>
+                    <text x="220" y="95">3</text>
+                    <text x="310" y="95">4</text>
+                    <text x="400" y="95">5</text>
+                </g>
+            </g>
+            
+            <!-- Doubly Linked List -->
+            <g transform="translate(350,220)">
+                <text x="125" y="30" text-anchor="middle" font-size="14" font-weight="bold">Doubly Linked List</text>
+                <g fill="#fff" stroke="#333" stroke-width="2">
+                    <rect x="20" y="70" width="40" height="40" rx="5"/>
+                    <rect x="110" y="70" width="40" height="40" rx="5"/>
+                    <rect x="200" y="70" width="40" height="40" rx="5"/>
+                    <rect x="290" y="70" width="40" height="40" rx="5"/>
+                    <rect x="380" y="70" width="40" height="40" rx="5"/>
+                    
+                    <!-- Double Arrows -->
+                    <line x1="60" y1="85" x2="110" y2="85" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    <line x1="110" y1="95" x2="60" y2="95" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    
+                    <line x1="150" y1="85" x2="200" y2="85" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    <line x1="200" y1="95" x2="150" y2="95" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    
+                    <line x1="240" y1="85" x2="290" y2="85" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    <line x1="290" y1="95" x2="240" y2="95" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    
+                    <line x1="330" y1="85" x2="380" y2="85" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    <line x1="380" y1="95" x2="330" y2="95" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                </g>
+                
+                <g fill="#333" font-size="14" text-anchor="middle">
+                    <text x="40" y="95">1</text>
+                    <text x="130" y="95">2</text>
+                    <text x="220" y="95">3</text>
+                    <text x="310" y="95">4</text>
+                    <text x="400" y="95">5</text>
+                </g>
+            </g>
+            
+            <!-- Arrow marker definition -->
+            <defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+                refX="9" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+                </marker>
+            </defs>
+        </svg>
+    </div>
+
+    <div class="implementation">
+        <h3>Complexity Analysis</h3>
+        <table>
+            <tr>
+                <th>Operation</th>
+                <th>Time</th>
+                <th>Space</th>
+                <th>Notes</th>
+            </tr>
+            <tr>
+                <td>Singly Linked List</td>
+                <td>O(n)</td>
+                <td>O(h)</td>
+                <td>h = tree height (recursion)</td>
+            </tr>
+            <tr>
+                <td>Doubly Linked List</td>
+                <td>O(n)</td>
+                <td>O(h)</td>
+                <td>Requires prev pointer handling</td>
+            </tr>
+            <tr>
+                <td>Circular Conversion</td>
+                <td>O(1)</td>
+                <td>O(1)</td>
+                <td>Additional step after list creation</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="implementation">
+        <h3>Key Considerations</h3>
+        <ul>
+            <li>BST to sorted list:
+                <ul>
+                    <li>Use inorder traversal</li>
+                    <li>Maintain previous node reference</li>
+                    <li>Handle head node specially</li>
+                </ul>
+            </li>
+            <li>Memory management:
+                <ul>
+                    <li>Clear unused pointers</li>
+                    <li>Handle circular references carefully</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</section>
+<section id="flattening" class="section">
+    <h2>Tree Flattening</h2>
+    
+    <div class="implementation">
+        <h3>Theory</h3>
+        <ul>
+            <li>Flattening transforms a binary tree into:
+                <ul>
+                    <li>Right-skewed tree: All nodes connected via right pointers</li>
+                    <li>Left-skewed tree: All nodes connected via left pointers</li>
+                </ul>
+            </li>
+            <li>Maintains original traversal order (typically preorder)</li>
+        </ul>
+    </div>
+
+    <div class="implementation">
+        <h3>Implementation</h3>
+        <pre><code class="language-python">
+# Right-skewed flattening (Morris Traversal)
+def flattenRight(root):
+    curr = root
+    while curr:
+        if curr.left:
+            # Find predecessor
+            prev = curr.left
+            while prev.right:
+                prev = prev.right
+            
+            # Rearrange pointers
+            prev.right = curr.right
+            curr.right = curr.left
+            curr.left = None
+        curr = curr.right
+
+# Left-skewed flattening
+def flattenLeft(root):
+    curr = root
+    while curr:
+        if curr.right:
+            # Find predecessor
+            prev = curr.right
+            while prev.left:
+                prev = prev.left
+            
+            # Rearrange pointers
+            prev.left = curr.left
+            curr.left = curr.right
+            curr.right = None
+        curr = curr.left
+
+# Recursive right flattening with stack
+def flattenRightRecursive(root):
+    def dfs(node):
+        nonlocal prev
+        if not node:
+            return
+            
+        right = node.right
+        left = node.left
+        
+        if prev:
+            prev.right = node
+        node.left = None
+        prev = node
+        
+        dfs(left)
+        dfs(right)
+        
+    prev = None
+    dfs(root)</code></pre>
+    </div>
+
+    <div class="note">
+        <h3>Visualization</h3>
+        <svg viewBox="0 0 900 450" xmlns="http://www.w3.org/2000/svg">
+            <!-- Original Tree -->
+            <g transform="translate(50,20)">
+                <text x="125" y="30" text-anchor="middle" font-size="14" font-weight="bold">Original Tree</text>
+                <g fill="#fff" stroke="#333" stroke-width="2">
+                    <circle cx="125" cy="70" r="20"/>
+                    <circle cx="75" cy="120" r="20"/>
+                    <circle cx="175" cy="120" r="20"/>
+                    <circle cx="25" cy="170" r="20"/>
+                    <circle cx="125" cy="170" r="20"/>
+                    
+                    <line x1="125" y1="90" x2="75" y2="100"/>
+                    <line x1="125" y1="90" x2="175" y2="100"/>
+                    <line x1="75" y1="140" x2="25" y2="150"/>
+                    <line x1="75" y1="140" x2="125" y2="150"/>
+                </g>
+                
+                <g fill="#333" font-size="14" text-anchor="middle">
+                    <text x="125" y="75">1</text>
+                    <text x="75" y="125">2</text>
+                    <text x="175" y="125">5</text>
+                    <text x="25" y="175">3</text>
+                    <text x="125" y="175">4</text>
+                </g>
+            </g>
+            
+            <!-- Right-skewed -->
+            <g transform="translate(350,20)">
+                <text x="125" y="30" text-anchor="middle" font-size="14" font-weight="bold">Right-skewed</text>
+                <g fill="#fff" stroke="#333" stroke-width="2">
+                    <circle cx="50" cy="70" r="20"/>
+                    <circle cx="125" cy="120" r="20"/>
+                    <circle cx="200" cy="170" r="20"/>
+                    <circle cx="275" cy="220" r="20"/>
+                    <circle cx="350" cy="270" r="20"/>
+                    
+                    <!-- Right connections -->
+                    <path d="M70,70 Q125,95 125,100" stroke="#3498db" stroke-width="2"/>
+                    <path d="M145,120 Q200,145 200,150" stroke="#3498db" stroke-width="2"/>
+                    <path d="M220,170 Q275,195 275,200" stroke="#3498db" stroke-width="2"/>
+                    <path d="M295,220 Q350,245 350,250" stroke="#3498db" stroke-width="2"/>
+                </g>
+                
+                <g fill="#333" font-size="14" text-anchor="middle">
+                    <text x="50" y="75">1</text>
+                    <text x="125" y="125">2</text>
+                    <text x="200" y="175">3</text>
+                    <text x="275" y="225">4</text>
+                    <text x="350" y="275">5</text>
+                </g>
+            </g>
+            
+            <!-- Left-skewed -->
+            <g transform="translate(650,20)">
+                <text x="125" y="30" text-anchor="middle" font-size="14" font-weight="bold">Left-skewed</text>
+                <g fill="#fff" stroke="#333" stroke-width="2">
+                    <circle cx="350" cy="70" r="20"/>
+                    <circle cx="275" cy="120" r="20"/>
+                    <circle cx="200" cy="170" r="20"/>
+                    <circle cx="125" cy="220" r="20"/>
+                    <circle cx="50" cy="270" r="20"/>
+                    
+                    <!-- Left connections -->
+                    <path d="M330,70 Q275,95 275,100" stroke="#e74c3c" stroke-width="2"/>
+                    <path d="M255,120 Q200,145 200,150" stroke="#e74c3c" stroke-width="2"/>
+                    <path d="M180,170 Q125,195 125,200" stroke="#e74c3c" stroke-width="2"/>
+                    <path d="M105,220 Q50,245 50,250" stroke="#e74c3c" stroke-width="2"/>
+                </g>
+                
+                <g fill="#333" font-size="14" text-anchor="middle">
+                    <text x="350" y="75">1</text>
+                    <text x="275" y="125">2</text>
+                    <text x="200" y="175">3</text>
+                    <text x="125" y="225">4</text>
+                    <text x="50" y="275">5</text>
+                </g>
+            </g>
+        </svg>
+    </div>
+
+    <div class="implementation">
+        <h3>Complexity Analysis</h3>
+        <table>
+            <tr>
+                <th>Method</th>
+                <th>Time</th>
+                <th>Space</th>
+                <th>Notes</th>
+            </tr>
+            <tr>
+                <td>Morris Flattening</td>
+                <td>O(n)</td>
+                <td>O(1)</td>
+                <td>No extra space needed</td>
+            </tr>
+            <tr>
+                <td>Recursive Flattening</td>
+                <td>O(n)</td>
+                <td>O(h)</td>
+                <td>h = tree height (stack space)</td>
+            </tr>
+            <tr>
+                <td>Iterative (Stack)</td>
+                <td>O(n)</td>
+                <td>O(h)</td>
+                <td>Explicit stack usage</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="implementation">
+        <h3>Step-by-Step Process</h3>
+        <ol>
+            <li>Right-skewed flattening:
+                <ul>
+                    <li>For each node with a left child:
+                        <ul>
+                            <li>Find the rightmost node in left subtree</li>
+                            <li>Connect it to current node's right child</li>
+                            <li>Move left subtree to right</li>
+                            <li>Set left pointer to null</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>Left-skewed flattening:
+                <ul>
+                    <li>Mirror of right-skewed process</li>
+                    <li>Connect leftmost nodes</li>
+                    <li>Maintain left links instead of right</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+</section>
+<section id="order-statistics" class="section">
+    <h2>Order Statistics in Trees</h2>
+    
+    <div class="implementation">
+        <h3>Theory</h3>
+        <ul>
+            <li>Order statistics in trees deal with:
+                <ul>
+                    <li>Finding kth smallest/largest element</li>
+                    <li>Rank of an element (position in sorted order)</li>
+                    <li>Size of subtrees</li>
+                    <li>Count of elements in range</li>
+                </ul>
+            </li>
+            <li>Augmented tree node properties:
+                <ul>
+                    <li>size: Number of nodes in subtree</li>
+                    <li>count: Frequency of duplicate values</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="implementation">
+        <h3>Implementation</h3>
+        <pre><code class="language-python">
+class TreeNode:
+    def __init__(self, val=0):
+        self.val = val
+        self.left = None
+        self.right = None
+        self.size = 1  # Size of subtree rooted at this node
+
+def updateSize(node):
+    if not node:
+        return 0
+    node.size = 1 + updateSize(node.left) + updateSize(node.right)
+    return node.size
+
+# Find kth smallest element
+def kthSmallest(root, k):
+    def findKth(node, k):
+        if not node:
+            return None
+            
+        leftSize = node.left.size if node.left else 0
+        
+        if leftSize + 1 == k:
+            return node.val
+        elif k <= leftSize:
+            return findKth(node.left, k)
+        else:
+            return findKth(node.right, k - leftSize - 1)
+            
+    return findKth(root, k)
+
+# Find rank of an element (1-based)
+def findRank(root, val):
+    def getRank(node, val):
+        if not node:
+            return 0
+            
+        leftSize = node.left.size if node.left else 0
+        
+        if val == node.val:
+            return leftSize + 1
+        elif val < node.val:
+            return getRank(node.left, val)
+        else:
+            return leftSize + 1 + getRank(node.right, val)
+            
+    return getRank(root, val)
+
+# Count elements in range [low, high]
+def countInRange(root, low, high):
+    if not root:
+        return 0
+        
+    if root.val < low:
+        return countInRange(root.right, low, high)
+    elif root.val > high:
+        return countInRange(root.left, low, high)
+    else:
+        return 1 + countInRange(root.left, low, high) + \
+               countInRange(root.right, low, high)</code></pre>
+    </div>
+
+    <div class="note">
+        <h3>Visualization</h3>
+        <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+            <!-- Augmented BST -->
+            <g transform="translate(50,20)">
+                <text x="150" y="30" text-anchor="middle" font-size="14" font-weight="bold">Augmented BST with Size</text>
+                <g fill="#fff" stroke="#333" stroke-width="2">
+                    <circle cx="150" cy="70" r="25"/>
+                    <circle cx="75" cy="140" r="25"/>
+                    <circle cx="225" cy="140" r="25"/>
+                    <circle cx="35" cy="210" r="25"/>
+                    <circle cx="115" cy="210" r="25"/>
+                    <circle cx="185" cy="210" r="25"/>
+                    <circle cx="265" cy="210" r="25"/>
+                    
+                    <line x1="150" y1="95" x2="75" y2="115"/>
+                    <line x1="150" y1="95" x2="225" y2="115"/>
+                    <line x1="75" y1="165" x2="35" y2="185"/>
+                    <line x1="75" y1="165" x2="115" y2="185"/>
+                    <line x1="225" y1="165" x2="185" y2="185"/>
+                    <line x1="225" y1="165" x2="265" y2="185"/>
+                </g>
+                
+                <g fill="#333" font-size="12" text-anchor="middle">
+                    <text x="150" y="65">20</text>
+                    <text x="150" y="80">s:7</text>
+                    
+                    <text x="75" y="135">10</text>
+                    <text x="75" y="150">s:3</text>
+                    
+                    <text x="225" y="135">30</text>
+                    <text x="225" y="150">s:3</text>
+                    
+                    <text x="35" y="205">5</text>
+                    <text x="35" y="220">s:1</text>
+                    
+                    <text x="115" y="205">15</text>
+                    <text x="115" y="220">s:1</text>
+                    
+                    <text x="185" y="205">25</text>
+                    <text x="185" y="220">s:1</text>
+                    
+                    <text x="265" y="205">35</text>
+                    <text x="265" y="220">s:1</text>
+                </g>
+            </g>
+
+            <!-- Operation Visualization -->
+            <g transform="translate(400,20)">
+                <text x="150" y="30" text-anchor="middle" font-size="14" font-weight="bold">Finding 3rd Smallest Element</text>
+                
+                <!-- Highlight path -->
+                <g fill="none" stroke="#3498db" stroke-width="2">
+                    <path d="M150,70 L75,140 L115,210" stroke-dasharray="5,5"/>
+                </g>
+                
+                <!-- Tree structure -->
+                <g fill="#fff" stroke="#333" stroke-width="2">
+                    <circle cx="150" cy="70" r="25"/>
+                    <circle cx="75" cy="140" r="25"/>
+                    <circle cx="225" cy="140" r="25"/>
+                    <circle cx="35" cy="210" r="25"/>
+                    <circle cx="115" cy="210" r="25" fill="#e74c3c"/>
+                    <circle cx="185" cy="210" r="25"/>
+                    <circle cx="265" cy="210" r="25"/>
+                    
+                    <line x1="150" y1="95" x2="75" y2="115"/>
+                    <line x1="150" y1="95" x2="225" y2="115"/>
+                    <line x1="75" y1="165" x2="35" y2="185"/>
+                    <line x1="75" y1="165" x2="115" y2="185"/>
+                    <line x1="225" y1="165" x2="185" y2="185"/>
+                    <line x1="225" y1="165" x2="265" y2="185"/>
+                </g>
+                
+                <g fill="#333" font-size="12" text-anchor="middle">
+                    <text x="150" y="65">20</text>
+                    <text x="150" y="80">s:7</text>
+                    
+                    <text x="75" y="135">10</text>
+                    <text x="75" y="150">s:3</text>
+                    
+                    <text x="225" y="135">30</text>
+                    <text x="225" y="150">s:3</text>
+                    
+                    <text x="35" y="205">5</text>
+                    <text x="35" y="220">s:1</text>
+                    
+                    <text x="115" y="205">15</text>
+                    <text x="115" y="220">s:1</text>
+                    
+                    <text x="185" y="205">25</text>
+                    <text x="185" y="220">s:1</text>
+                    
+                    <text x="265" y="205">35</text>
+                    <text x="265" y="220">s:1</text>
+                </g>
+            </g>
+        </svg>
+    </div>
+
+    <div class="implementation">
+        <h3>Complexity Analysis</h3>
+        <table>
+            <tr>
+                <th>Operation</th>
+                <th>Time</th>
+                <th>Space</th>
+                <th>Notes</th>
+            </tr>
+            <tr>
+                <td>Size Update</td>
+                <td>O(n)</td>
+                <td>O(h)</td>
+                <td>One-time preprocessing</td>
+            </tr>
+            <tr>
+                <td>Kth Smallest</td>
+                <td>O(h)</td>
+                <td>O(h)</td>
+                <td>h = tree height</td>
+            </tr>
+            <tr>
+                <td>Find Rank</td>
+                <td>O(h)</td>
+                <td>O(h)</td>
+                <td>Uses size property</td>
+            </tr>
+            <tr>
+                <td>Range Count</td>
+                <td>O(h)</td>
+                <td>O(h)</td>
+                <td>BST property based</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="implementation">
+        <h3>Applications</h3>
+        <ul>
+            <li>Database operations:
+                <ul>
+                    <li>Rank-based queries</li>
+                    <li>Range statistics</li>
+                    <li>Order maintenance</li>
+                </ul>
+            </li>
+            <li>Statistical analysis:
+                <ul>
+                    <li>Median finding</li>
+                    <li>Percentile calculations</li>
+                    <li>Frequency counting</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</section>
+    </main>
+
+    <a href="#top" class="top-link">↑</a>
+</body>
+</html>
